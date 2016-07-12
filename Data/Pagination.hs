@@ -21,6 +21,7 @@ module Data.Pagination
   , pageIndex
     -- * Paginated data
   , Paginated
+  , paginate
   , paginatedItems
   , paginatedPagination
   , paginatedPagesTotal
@@ -108,6 +109,28 @@ instance Traversable Paginated where
   traverse f p =
     let g p' xs = p' { pgItems = xs }
     in g p <$> traverse f (pgItems p)
+
+-- | Create paginated data.
+
+paginate :: (Monad m, Integral n)
+  => Pagination        -- ^ Pagination options
+  -> Natural           -- ^ Total number of items
+  -> (n -> n -> m [a])
+     -- ^ The element producing callback. The function takes arguments:
+     -- offset and limit.
+  -> m (Paginated a)   -- ^ The paginated data
+paginate p@(Pagination size index') totalItems f = do
+  items <- f (fromIntegral offset) (fromIntegral size)
+  return Paginated
+    { pgItems      = items
+    , pgPagination = p
+    , pgPagesTotal = totalPages
+    , pgItemsTotal = totalItems }
+  where
+    (whole, rems) = totalItems `quotRem` size
+    totalPages    = max 1 (whole + if rems == 0 then 0 else 1)
+    index         = min index' totalPages
+    offset        = (index - 1) * size
 
 -- | Get subset of items for current page.
 
