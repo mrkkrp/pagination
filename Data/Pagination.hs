@@ -9,6 +9,7 @@
 --
 -- Framework-agnostic pagination boilerplate.
 
+{-# LANGUAGE CPP                #-}
 {-# LANGUAGE DeriveDataTypeable #-}
 {-# LANGUAGE DeriveGeneric      #-}
 {-# LANGUAGE RecordWildCards    #-}
@@ -44,6 +45,13 @@ import Data.Typeable (Typeable)
 import GHC.Generics
 import Numeric.Natural
 import qualified Data.List.NonEmpty as NE
+
+#if !MIN_VERSION_base(4,8,0)
+import Control.Applicative
+import Data.Foldable (Foldable (..))
+import Data.Traversable (Traversable (..))
+import Prelude hiding (foldr)
+#endif
 
 -- | The data type represents settings that are required to organize data in
 -- paginated form.
