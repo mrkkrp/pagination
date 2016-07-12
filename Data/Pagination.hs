@@ -76,11 +76,13 @@ mkPagination size index
 
 pageSize :: Integral n => Pagination -> n
 pageSize (Pagination size _) = fromIntegral size
+{-# INLINE pageSize #-}
 
 -- | Get page index from a 'Pagination'.
 
 pageIndex :: Integral n => Pagination -> n
 pageIndex (Pagination _ index) = fromIntegral index
+{-# INLINE pageIndex #-}
 
 -- | Exception indicating various problems when working with paginated data.
 
