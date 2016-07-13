@@ -33,7 +33,9 @@ module Data.Pagination
   , hasPrevPage
   , hasNextPage
   , backwardEllip
-  , forwardEllip )
+  , forwardEllip
+    -- * Exceptions
+  , PaginationException (..) )
 where
 
 import Control.DeepSeq
@@ -52,6 +54,9 @@ import Data.Foldable (Foldable (..))
 import Data.Traversable (Traversable (..))
 import Prelude hiding (foldr)
 #endif
+
+----------------------------------------------------------------------------
+-- Pagination settings
 
 -- | The data type represents settings that are required to organize data in
 -- paginated form.
@@ -74,25 +79,18 @@ mkPagination size index
 
 -- | Get page size (maximum number of items on a page) from a 'Pagination'.
 
-pageSize :: Integral n => Pagination -> n
-pageSize (Pagination size _) = fromIntegral size
+pageSize :: Pagination -> Natural
+pageSize (Pagination size _) = size
 {-# INLINE pageSize #-}
 
 -- | Get page index from a 'Pagination'.
 
-pageIndex :: Integral n => Pagination -> n
-pageIndex (Pagination _ index) = fromIntegral index
+pageIndex :: Pagination -> Natural
+pageIndex (Pagination _ index) = index
 {-# INLINE pageIndex #-}
 
--- | Exception indicating various problems when working with paginated data.
-
-data PaginationException
-  = ZeroPageSize
-  | ZeroPageIndex
-  deriving (Eq, Show, Data, Typeable, Generic)
-
-instance NFData PaginationException
-instance Exception PaginationException
+----------------------------------------------------------------------------
+-- Paginated data
 
 -- | Data in paginated form.
 
@@ -129,11 +127,11 @@ paginate :: (Monad m, Integral n)
      -- ^ The element producing callback. The function takes arguments:
      -- offset and limit.
   -> m (Paginated a)   -- ^ The paginated data
-paginate p@(Pagination size index') totalItems f = do
+paginate (Pagination size index') totalItems f = do
   items <- f (fromIntegral offset) (fromIntegral size)
   return Paginated
     { pgItems      = items
-    , pgPagination = p
+    , pgPagination = Pagination size index
     , pgPagesTotal = totalPages
     , pgItemsTotal = totalItems }
   where
@@ -156,14 +154,14 @@ paginatedPagination = pgPagination
 
 -- | Get total number of pages in this collection.
 
-paginatedPagesTotal :: Integral n => Paginated a -> n
-paginatedPagesTotal = fromIntegral . pgPagesTotal
+paginatedPagesTotal :: Paginated a -> Natural
+paginatedPagesTotal = pgPagesTotal
 {-# INLINE paginatedPagesTotal #-}
 
 -- | Get total number of items in this collection.
 
-paginatedItemsTotal :: Integral n => Paginated a -> n
-paginatedItemsTotal = fromIntegral . pgItemsTotal
+paginatedItemsTotal :: Paginated a -> Natural
+paginatedItemsTotal = pgItemsTotal
 {-# INLINE paginatedItemsTotal #-}
 
 -- | Test whether there are other pages.
@@ -203,12 +201,14 @@ pageRange Paginated {..} n =
 
 -- | Just like 'pageRange', but always includes first and last pages.
 
-pageRangeFull :: Integral n
-  => Paginated a       -- ^ Paginated data
+pageRangeFull
+  :: Paginated a       -- ^ Paginated data
   -> Natural           -- ^ Number of pages to show before and after
-  -> NonEmpty n        -- ^ Page range
-pageRangeFull p n = fromIntegral <$>
-  (if NE.last pr == total then pr else pre <> (total :| []))
+  -> NonEmpty Natural  -- ^ Page range
+pageRangeFull p n =
+  if NE.last pr == total
+    then pr
+    else pre <> (total :| [])
   where
     pr    = pageRange p n
     total = pgPagesTotal p
@@ -233,3 +233,16 @@ forwardEllip
   -> Bool              -- ^ Do we have forward ellipsis?
 forwardEllip p@Paginated {..} n = NE.last (pageRange p n) < pred pgPagesTotal
 {-# INLINE forwardEllip #-}
+
+----------------------------------------------------------------------------
+-- Exceptions
+
+-- | Exception indicating various problems when working with paginated data.
+
+data PaginationException
+  = ZeroPageSize  -- ^ Page size (number of items per page) was zero
+  | ZeroPageIndex -- ^ Page index was zero (they start from one)
+  deriving (Eq, Show, Data, Typeable, Generic)
+
+instance NFData PaginationException
+instance Exception PaginationException
