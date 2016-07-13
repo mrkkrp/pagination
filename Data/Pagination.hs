@@ -28,7 +28,6 @@ module Data.Pagination
   , paginatedItemsTotal
   , hasOtherPages
   , pageRange
-  , pageRangeFull
   , hasPrevPage
   , hasNextPage
   , backwardEllip
@@ -41,7 +40,6 @@ import Control.DeepSeq
 import Control.Monad.Catch
 import Data.Data (Data)
 import Data.List.NonEmpty (NonEmpty (..))
-import Data.Semigroup ((<>))
 import Data.Typeable (Typeable)
 import GHC.Generics
 import Numeric.Natural
@@ -190,21 +188,6 @@ pageRange Paginated {..} n =
             | index >= pgPagesTotal - n = pgPagesTotal - len
             | otherwise                 = index - n - 1
   in (+ shift) <$> NE.fromList [1..len]
-
--- | Just like 'pageRange', but always includes first and last pages.
-
-pageRangeFull
-  :: Paginated a       -- ^ Paginated data
-  -> Natural           -- ^ Number of pages to show before and after
-  -> NonEmpty Natural  -- ^ Page range
-pageRangeFull p n =
-  if NE.last pr == total
-    then pr
-    else pre <> (total :| [])
-  where
-    pr    = pageRange p n
-    total = pgPagesTotal p
-    pre   = if NE.head pr == 1 then pr else NE.cons 1 pr
 
 -- | Backward ellipsis appears when page range (pages around current page to
 -- jump to) has gap between its beginning and the first page.

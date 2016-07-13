@@ -79,7 +79,6 @@ spec = do
           paginatedPagesTotal r `shouldBe` 1
           paginatedItemsTotal r `shouldBe` 0
           pageRange         r n `shouldBe` 1 :| []
-          pageRangeFull     r n `shouldBe` 1 :| []
           hasOtherPages       r `shouldBe` False
           hasPrevPage         r `shouldBe` False
           hasNextPage         r `shouldBe` False
