@@ -35,6 +35,7 @@
 
 module Main (main) where
 
+import Control.Monad
 import Control.Monad.Catch (MonadThrow (..), fromException)
 import Data.List.NonEmpty (NonEmpty (..))
 import Data.Maybe (fromJust)
@@ -42,6 +43,7 @@ import Data.Pagination
 import Numeric.Natural
 import Test.Hspec
 import Test.QuickCheck
+import qualified Data.List.NonEmpty as NE
 
 main :: IO ()
 main = hspec spec
@@ -116,6 +118,43 @@ spec = do
     it "correctly detects whether we the collection has other pages" $
       property $ \r ->
         hasOtherPages (r :: Paginated Int) `shouldBe` paginatedPagesTotal r > 1
+  describe "hasPrevPage" $
+    it "correctly detect whether paginated data has previous page" $
+      property $ \r ->
+        hasPrevPage (r :: Paginated Int) ===
+          (pageIndex (paginatedPagination r) /= 1)
+  describe "hasNextPage" $
+    it "correctly detect whether paginated data has next page" $
+      property $ \r ->
+        hasNextPage (r :: Paginated Int) ===
+          (pageIndex (paginatedPagination r) /= paginatedPagesTotal r)
+  describe "pageRange" $
+    it "correctly performs generation of page ranges" $
+      forM_ [1..10] $ \n -> do
+        p <- mkPagination 10 n
+        r <- paginate p 95 (\_ limit -> return [1..limit])
+        let x = NE.toList (pageRange (r :: Paginated Int) 2)
+        x `shouldBe` case n of
+          1 -> [1..5]
+          2 -> [1..5]
+          3 -> [1..5]
+          4 -> [2..6]
+          5 -> [3..7]
+          6 -> [4..8]
+          7 -> [5..9]
+          8 -> [6..10]
+          9 -> [6..10]
+          _ -> [6..10]
+  describe "backwardEllip" $
+    it "correctly detects when there is a backward ellipsis" $
+      property $ \r n ->
+        backwardEllip (r :: Paginated Int) n ===
+          (NE.head (pageRange r n) > 2)
+  describe "forwardEllip" $
+    it "correctly detects when there is a forward ellipsis" $
+      property $ \r n ->
+        forwardEllip (r :: Paginated Int) n ===
+          (NE.last (pageRange r n) < paginatedPagesTotal r - 1)
 
 ----------------------------------------------------------------------------
 -- Arbitrary instances
