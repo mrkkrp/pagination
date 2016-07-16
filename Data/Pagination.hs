@@ -163,7 +163,7 @@ hasOtherPages Paginated {..} = pgPagesTotal > 1
 -- | Is there previous page?
 
 hasPrevPage :: Paginated a -> Bool
-hasPrevPage Paginated {..} = pageIndex pgPagination > (1 :: Natural)
+hasPrevPage Paginated {..} = pageIndex pgPagination > 1
 {-# INLINE hasPrevPage #-}
 
 -- | Is there next page?
