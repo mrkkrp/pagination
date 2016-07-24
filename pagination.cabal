@@ -43,7 +43,7 @@ category:             Data
 synopsis:             Framework-agnostic pagination boilerplate
 build-type:           Simple
 description:          Framework-agnostic pagination boilerplate.
-extra-source-files:   CHANGELOG.md
+extra-doc-files:      CHANGELOG.md
                     , README.md
 
 source-repository head
