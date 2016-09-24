@@ -110,21 +110,21 @@ instance Traversable Paginated where
 
 -- | Create paginated data.
 
-paginate :: (Monad m, Integral n)
+paginate :: (Functor m, Integral n)
   => Pagination        -- ^ Pagination options
   -> Natural           -- ^ Total number of items
   -> (n -> n -> m [a])
      -- ^ The element producing callback. The function takes arguments:
      -- offset and limit.
   -> m (Paginated a)   -- ^ The paginated data
-paginate (Pagination size index') totalItems f = do
-  items <- f (fromIntegral offset) (fromIntegral size)
-  return Paginated
-    { pgItems      = items
-    , pgPagination = Pagination size index
-    , pgPagesTotal = totalPages
-    , pgItemsTotal = totalItems }
+paginate (Pagination size index') totalItems f =
+  r <$> f (fromIntegral offset) (fromIntegral size)
   where
+    r xs = Paginated
+      { pgItems      = xs
+      , pgPagination = Pagination size index
+      , pgPagesTotal = totalPages
+      , pgItemsTotal = totalItems }
     (whole, rems) = totalItems `quotRem` size
     totalPages    = max 1 (whole + if rems == 0 then 0 else 1)
     index         = min index' totalPages
