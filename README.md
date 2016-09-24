@@ -7,7 +7,7 @@
 [![Build Status](https://travis-ci.org/mrkkrp/pagination.svg?branch=master)](https://travis-ci.org/mrkkrp/pagination)
 [![Coverage Status](https://coveralls.io/repos/mrkkrp/pagination/badge.svg?branch=master&service=github)](https://coveralls.io/github/mrkkrp/pagination?branch=master)
 
-The package implements pagination boilerplate in framework-agnostic way.
+The package implements pagination boilerplate in a framework-agnostic way.
 
 ## License
 
