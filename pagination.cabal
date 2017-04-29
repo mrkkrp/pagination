@@ -79,7 +79,7 @@ test-suite tests
                     , QuickCheck       >= 2.4 && < 3.0
                     , exceptions       >= 0.6 && < 0.9
                     , hspec            >= 2.0 && < 3.0
-                    , pagination       >= 0.1.1
+                    , pagination
 
   if !impl(ghc >= 8.0)
     build-depends:    semigroups       == 0.18.*
