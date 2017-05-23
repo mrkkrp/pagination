@@ -10,6 +10,7 @@
 -- Framework-agnostic pagination boilerplate.
 
 {-# LANGUAGE DeriveDataTypeable #-}
+{-# LANGUAGE DeriveFunctor      #-}
 {-# LANGUAGE DeriveGeneric      #-}
 {-# LANGUAGE RecordWildCards    #-}
 
@@ -48,15 +49,14 @@ import qualified Data.List.NonEmpty as NE
 ----------------------------------------------------------------------------
 -- Pagination settings
 
--- | The data type represents settings that are required to organize data in
--- paginated form.
+-- | Settings that are required to organize data in paginated form.
 
 data Pagination = Pagination Natural Natural
   deriving (Eq, Show, Data, Typeable, Generic)
 
 instance NFData Pagination
 
--- | Create a 'Pagination' value. Throws 'PaginationException'.
+-- | Create a 'Pagination' value. May throw 'PaginationException'.
 
 mkPagination :: MonadThrow m
   => Natural           -- ^ Page size
@@ -80,19 +80,16 @@ pageIndex (Pagination _ index) = index
 ----------------------------------------------------------------------------
 -- Paginated data
 
--- | Data in paginated form.
+-- | Data in the paginated form.
 
 data Paginated a = Paginated
   { pgItems      :: [a]
   , pgPagination :: Pagination
   , pgPagesTotal :: Natural
   , pgItemsTotal :: Natural
-  } deriving (Eq, Show, Data, Typeable, Generic)
+  } deriving (Eq, Show, Data, Typeable, Generic, Functor)
 
 instance NFData a => NFData (Paginated a)
-
-instance Functor Paginated where
-  fmap f p@Paginated {..} = p { pgItems = fmap f pgItems }
 
 instance Applicative Paginated where
   pure x  = Paginated [x] (Pagination 1 1) 1 1
@@ -133,17 +130,18 @@ paginate (Pagination size index') totalItems f =
 paginatedItems :: Paginated a -> [a]
 paginatedItems = pgItems
 
--- | Get 'Pagination' parameters that were used to create this paginated result.
+-- | Get 'Pagination' parameters that were used to create this paginated
+-- result.
 
 paginatedPagination :: Paginated a -> Pagination
 paginatedPagination = pgPagination
 
--- | Get total number of pages in this collection.
+-- | Get the total number of pages in this collection.
 
 paginatedPagesTotal :: Paginated a -> Natural
 paginatedPagesTotal = pgPagesTotal
 
--- | Get total number of items in this collection.
+-- | Get the total number of items in this collection.
 
 paginatedItemsTotal :: Paginated a -> Natural
 paginatedItemsTotal = pgItemsTotal
@@ -163,9 +161,9 @@ hasPrevPage Paginated {..} = pageIndex pgPagination > 1
 hasNextPage :: Paginated a -> Bool
 hasNextPage Paginated {..} = pageIndex pgPagination < pgPagesTotal
 
--- | Get range of pages to show before and after current page. This does not
--- necessarily include the first and the last pages (they are supposed to be
--- shown in all cases). Result of the function is always sorted.
+-- | Get range of pages to show before and after the current page. This does
+-- not necessarily include the first and the last pages (they are supposed
+-- to be shown in all cases). Result of the function is always sorted.
 
 pageRange
   :: Paginated a       -- ^ Paginated data
