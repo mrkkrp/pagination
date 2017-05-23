@@ -40,17 +40,6 @@ spec = do
         let f :: Int -> Int
             f = (+ 1)
         in paginatedItems (f <$> r) === (f <$> paginatedItems r)
-  describe "Applicative instance of Paginated" $ do
-    it "constructs the right pure Paginated value" $ do
-      p <- mkPagination 1 1
-      r <- paginate p 1 ((\_ _ -> return [1]) :: Int -> Int -> IO [Int])
-      pure (1 :: Int) `shouldBe` r
-    it "the (<*>) operator works like with lists" $
-      property $ \r0 r1 ->
-        let f :: Int -> Int -> Int
-            f = (*)
-        in paginatedItems (f <$> r0 <*> r1) ===
-             (f <$> paginatedItems r0 <*> paginatedItems r1)
   describe "Foldable instance of Paginated" $
     it "foldr works like with lists" $
       property $ \p n ->

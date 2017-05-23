@@ -91,10 +91,6 @@ data Paginated a = Paginated
 
 instance NFData a => NFData (Paginated a)
 
-instance Applicative Paginated where
-  pure x  = Paginated [x] (Pagination 1 1) 1 1
-  f <*> p = p { pgItems = pgItems f <*> pgItems p }
-
 instance Foldable Paginated where
   foldr f x = foldr f x . pgItems
 
