@@ -3,6 +3,8 @@
 * Drop the `Applicative` instance of `Paginated` as it may lead to confusing
   results in certain cases.
 
+* Improved documentation and metadata.
+
 ## Pagination 0.1.1
 
 * Relax constraint of `paginate`. We only need `Functor` here, not `Monad`.
