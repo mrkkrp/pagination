@@ -1,3 +1,7 @@
+## Pagination 0.2.1
+
+* Fix test suite failure with `QuickCheck-2.10`.
+
 ## Pagination 0.2.0
 
 * Drop the `Applicative` instance of `Paginated` as it may lead to confusing
