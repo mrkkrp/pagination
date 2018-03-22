@@ -5,7 +5,6 @@
 [![Stackage Nightly](http://stackage.org/package/pagination/badge/nightly)](http://stackage.org/nightly/package/pagination)
 [![Stackage LTS](http://stackage.org/package/pagination/badge/lts)](http://stackage.org/lts/package/pagination)
 [![Build Status](https://travis-ci.org/mrkkrp/pagination.svg?branch=master)](https://travis-ci.org/mrkkrp/pagination)
-[![Coverage Status](https://coveralls.io/repos/mrkkrp/pagination/badge.svg?branch=master&service=github)](https://coveralls.io/github/mrkkrp/pagination?branch=master)
 
 The package implements pagination boilerplate in a framework-agnostic way.
 
