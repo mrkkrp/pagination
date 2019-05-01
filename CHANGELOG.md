@@ -1,3 +1,7 @@
+## Unreleased
+
+* Dropped support for GHC 7.10.
+
 ## Pagination 0.2.1
 
 * Fix test suite failure with `QuickCheck-2.10`.
