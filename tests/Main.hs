@@ -1,4 +1,3 @@
-{-# LANGUAGE CPP                  #-}
 {-# LANGUAGE RankNTypes           #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 
@@ -144,10 +143,8 @@ spec = do
 ----------------------------------------------------------------------------
 -- Arbitrary instances
 
-#if MIN_VERSION_QuickCheck(2,10,0)
 instance Arbitrary Natural where
   arbitrary = fromInteger . getNonNegative <$> arbitrary
-#endif
 
 instance Arbitrary Pagination where
   arbitrary = do
