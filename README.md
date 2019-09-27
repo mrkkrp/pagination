@@ -8,6 +8,13 @@
 
 The package implements pagination boilerplate in a framework-agnostic way.
 
+## Contribution
+
+Issues, bugs, and questions may be reported in [the GitHub issue tracker for
+this project](https://github.com/mrkkrp/pagination/issues).
+
+Pull requests are also welcome.
+
 ## License
 
 Copyright © 2016–present Mark Karpov
