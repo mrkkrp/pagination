@@ -4,7 +4,7 @@
 module Main (main) where
 
 import Control.Monad
-import Control.Monad.Catch (MonadThrow (..), fromException)
+import Control.Monad.Catch (SomeException, fromException)
 import Data.List.NonEmpty (NonEmpty (..))
 import qualified Data.List.NonEmpty as NE
 import Data.Maybe (fromJust)
@@ -167,7 +167,7 @@ instance Arbitrary a => Arbitrary (Paginated a) where
 -- Helpers
 
 -- | Run computation inside 'MonadThrow' and return result as an 'Either'.
-asEither :: (forall m. MonadThrow m => m a) -> Either PaginationException a
+asEither :: Either SomeException a -> Either PaginationException a
 asEither = either (Left . fromJust . fromException) Right
 
 -- | Calculate number of items in paginated selection given total number of
