@@ -1,6 +1,6 @@
 cabal-version:   1.18
 name:            pagination
-version:         0.2.1
+version:         0.2.2
 license:         BSD3
 license-file:    LICENSE.md
 maintainer:      Mark Karpov <markkarpov92@gmail.com>
