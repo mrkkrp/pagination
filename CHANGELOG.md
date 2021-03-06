@@ -1,6 +1,6 @@
-## Unreleased
+## Pagination 0.2.2
 
-* Dropped support for GHC 8.2 and older.
+* Works with 9.0.1. Dropped support for GHC 8.6 and older.
 
 ## Pagination 0.2.1
 
