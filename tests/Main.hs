@@ -166,7 +166,8 @@ instance Arbitrary a => Arbitrary (Paginated a) where
 ----------------------------------------------------------------------------
 -- Helpers
 
--- | Run computation inside 'MonadThrow' and return result as an 'Either'.
+-- | Run a computation inside 'MonadThrow' and return its result as an
+-- 'Either'.
 asEither :: Either SomeException a -> Either PaginationException a
 asEither = either (Left . fromJust . fromException) Right
 
@@ -183,8 +184,8 @@ plen ::
   n
 plen total offset limit = fromIntegral (min (total - offset) limit)
 
--- | Calculate total number of pages given total number of items, and page
--- size.
+-- | Calculate the total number of pages given the total number of items,
+-- and the page size.
 ptotal ::
   Integral n =>
   -- | Total items

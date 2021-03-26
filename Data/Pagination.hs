@@ -51,7 +51,7 @@ import Numeric.Natural
 ----------------------------------------------------------------------------
 -- Pagination settings
 
--- | Settings that are required to organize data in paginated form.
+-- | Pagination settings.
 data Pagination = Pagination Natural Natural
   deriving (Eq, Show, Data, Typeable, Generic)
 
@@ -64,18 +64,19 @@ mkPagination ::
   Natural ->
   -- | Page index
   Natural ->
-  -- | The pagination settings
+  -- | Pagination settings
   m Pagination
 mkPagination size index
   | size == 0 = throwM ZeroPageSize
   | index == 0 = throwM ZeroPageIndex
   | otherwise = return (Pagination size index)
 
--- | Get page size (maximum number of items on a page) from a 'Pagination'.
+-- | Get the page size (the maximum number of items on a page) from a
+-- 'Pagination'.
 pageSize :: Pagination -> Natural
 pageSize (Pagination size _) = size
 
--- | Get page index from a 'Pagination'.
+-- | Get the page index from a 'Pagination'.
 pageIndex :: Pagination -> Natural
 pageIndex (Pagination _ index) = index
 
@@ -128,7 +129,7 @@ paginate (Pagination size index') totalItems f =
     index = min index' totalPages
     offset = (index - 1) * size
 
--- | Get subset of items for current page.
+-- | Get the items for current page.
 paginatedItems :: Paginated a -> [a]
 paginatedItems = pgItems
 
@@ -157,9 +158,10 @@ hasPrevPage Paginated {..} = pageIndex pgPagination > 1
 hasNextPage :: Paginated a -> Bool
 hasNextPage Paginated {..} = pageIndex pgPagination < pgPagesTotal
 
--- | Get range of pages to show before and after the current page. This does
--- not necessarily include the first and the last pages (they are supposed
--- to be shown in all cases). Result of the function is always sorted.
+-- | Get the range of pages to show before and after the current page. This
+-- does not necessarily include the first and the last pages (they are
+-- supposed to be shown in all cases). Result of the function is always
+-- sorted.
 pageRange ::
   -- | Paginated data
   Paginated a ->
