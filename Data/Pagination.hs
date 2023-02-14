@@ -59,7 +59,7 @@ instance NFData Pagination
 
 -- | Create a 'Pagination' value. May throw 'PaginationException'.
 mkPagination ::
-  MonadThrow m =>
+  (MonadThrow m) =>
   -- | Page size
   Natural ->
   -- | Page index
@@ -92,7 +92,7 @@ data Paginated a = Paginated
   }
   deriving (Eq, Show, Data, Typeable, Generic, Functor)
 
-instance NFData a => NFData (Paginated a)
+instance (NFData a) => NFData (Paginated a)
 
 instance Foldable Paginated where
   foldr f x = foldr f x . pgItems
