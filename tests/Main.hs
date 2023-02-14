@@ -43,7 +43,7 @@ spec = do
   describe "Foldable instance of Paginated" $
     it "foldr works like with lists" $
       property $ \p n ->
-        let f :: Foldable f => f Int -> Int
+        let f :: (Foldable f) => f Int -> Int
             f = foldr (+) n
          in f p === f (paginatedItems p)
   describe "Traversable instance of Paginated" $
@@ -156,7 +156,7 @@ instance Arbitrary Pagination where
     where
       p = arbitrary `suchThat` (> 0)
 
-instance Arbitrary a => Arbitrary (Paginated a) where
+instance (Arbitrary a) => Arbitrary (Paginated a) where
   arbitrary = do
     pagination <- arbitrary
     total <- arbitrary
@@ -174,7 +174,7 @@ asEither = either (Left . fromJust . fromException) Right
 -- | Calculate number of items in paginated selection given total number of
 -- items, offset, and limit.
 plen ::
-  Integral n =>
+  (Integral n) =>
   -- | Total items
   Natural ->
   -- | Offset
@@ -187,7 +187,7 @@ plen total offset limit = fromIntegral (min (total - offset) limit)
 -- | Calculate the total number of pages given the total number of items,
 -- and the page size.
 ptotal ::
-  Integral n =>
+  (Integral n) =>
   -- | Total items
   Natural ->
   -- | Page size
