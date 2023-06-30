@@ -6,7 +6,7 @@ module Main (main) where
 import Control.Monad
 import Control.Monad.Catch (SomeException, fromException)
 import Data.List.NonEmpty (NonEmpty (..))
-import qualified Data.List.NonEmpty as NE
+import Data.List.NonEmpty qualified as NE
 import Data.Maybe (fromJust)
 import Data.Pagination
 import Numeric.Natural
