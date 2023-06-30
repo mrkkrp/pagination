@@ -43,7 +43,7 @@ import Control.DeepSeq
 import Control.Monad.Catch
 import Data.Data (Data)
 import Data.List.NonEmpty (NonEmpty (..))
-import qualified Data.List.NonEmpty as NE
+import Data.List.NonEmpty qualified as NE
 import Data.Typeable (Typeable)
 import GHC.Generics
 import Numeric.Natural
