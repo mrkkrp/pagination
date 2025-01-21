@@ -44,7 +44,6 @@ import Control.Monad.Catch
 import Data.Data (Data)
 import Data.List.NonEmpty (NonEmpty (..))
 import Data.List.NonEmpty qualified as NE
-import Data.Typeable (Typeable)
 import GHC.Generics
 import Numeric.Natural
 
@@ -53,7 +52,7 @@ import Numeric.Natural
 
 -- | Pagination settings.
 data Pagination = Pagination Natural Natural
-  deriving (Eq, Show, Data, Typeable, Generic)
+  deriving (Eq, Show, Data, Generic)
 
 instance NFData Pagination
 
@@ -90,7 +89,7 @@ data Paginated a = Paginated
     pgPagesTotal :: Natural,
     pgItemsTotal :: Natural
   }
-  deriving (Eq, Show, Data, Typeable, Generic, Functor)
+  deriving (Eq, Show, Data, Generic, Functor)
 
 instance (NFData a) => NFData (Paginated a)
 
@@ -209,7 +208,7 @@ data PaginationException
     ZeroPageSize
   | -- | Page index was zero (they start from one)
     ZeroPageIndex
-  deriving (Eq, Show, Data, Typeable, Generic)
+  deriving (Eq, Show, Data, Generic)
 
 instance NFData PaginationException
 
