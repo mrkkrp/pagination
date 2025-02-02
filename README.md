@@ -4,7 +4,7 @@
 [![Hackage](https://img.shields.io/hackage/v/pagination.svg?style=flat)](https://hackage.haskell.org/package/pagination)
 [![Stackage Nightly](http://stackage.org/package/pagination/badge/nightly)](http://stackage.org/nightly/package/pagination)
 [![Stackage LTS](http://stackage.org/package/pagination/badge/lts)](http://stackage.org/lts/package/pagination)
-![CI](https://github.com/mrkkrp/pagination/workflows/CI/badge.svg?branch=master)
+[![CI](https://github.com/mrkkrp/pagination/actions/workflows/ci.yaml/badge.svg)](https://github.com/mrkkrp/pagination/actions/workflows/ci.yaml)
 
 The package implements pagination boilerplate in a framework-agnostic way.
 
