@@ -145,9 +145,6 @@ spec = do
 ----------------------------------------------------------------------------
 -- Arbitrary instances
 
-instance Arbitrary Natural where
-  arbitrary = fromInteger . getNonNegative <$> arbitrary
-
 instance Arbitrary Pagination where
   arbitrary = do
     size <- p
