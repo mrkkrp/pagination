@@ -19,4 +19,4 @@ Pull requests are also welcome.
 
 Copyright © 2016–present Mark Karpov
 
-Distributed under BSD 3 clause license.
+Distributed under the BSD 3-clause license.

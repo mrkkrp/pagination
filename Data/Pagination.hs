@@ -128,7 +128,7 @@ paginate (Pagination size index') totalItems f =
     index = min index' totalPages
     offset = (index - 1) * size
 
--- | Get the items for current page.
+-- | Get the items for the current page.
 paginatedItems :: Paginated a -> [a]
 paginatedItems = pgItems
 
@@ -149,17 +149,17 @@ paginatedItemsTotal = pgItemsTotal
 hasOtherPages :: Paginated a -> Bool
 hasOtherPages Paginated {..} = pgPagesTotal > 1
 
--- | Is there previous page?
+-- | Is there a previous page?
 hasPrevPage :: Paginated a -> Bool
 hasPrevPage Paginated {..} = pageIndex pgPagination > 1
 
--- | Is there next page?
+-- | Is there a next page?
 hasNextPage :: Paginated a -> Bool
 hasNextPage Paginated {..} = pageIndex pgPagination < pgPagesTotal
 
 -- | Get the range of pages to show before and after the current page. This
 -- does not necessarily include the first and the last pages (they are
--- supposed to be shown in all cases). Result of the function is always
+-- supposed to be shown in all cases). The result of the function is always
 -- sorted.
 pageRange ::
   -- | Paginated data
@@ -178,8 +178,8 @@ pageRange Paginated {..} n =
         | otherwise = index - n - 1
    in (+ shift) <$> NE.fromList [1 .. len]
 
--- | Backward ellipsis appears when page range (pages around current page to
--- jump to) has gap between its beginning and the first page.
+-- | Backward ellipsis appears when the page range (pages around the current
+-- page to jump to) has a gap between its beginning and the first page.
 backwardEllip ::
   -- | Paginated data
   Paginated a ->
@@ -188,8 +188,8 @@ backwardEllip ::
   Bool
 backwardEllip p n = NE.head (pageRange p n) > 2
 
--- | Forward ellipsis appears when page range (pages around current page to
--- jump to) has gap between its end and the last page.
+-- | Forward ellipsis appears when the page range (pages around the current
+-- page to jump to) has a gap between its end and the last page.
 forwardEllip ::
   -- | Paginated data
   Paginated a ->
