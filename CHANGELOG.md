@@ -1,3 +1,7 @@
+## Pagination 0.2.3
+
+* The test suite works with `QuickCheck-2.19`.
+
 ## Pagination 0.2.2
 
 * Works with 9.0.1. Dropped support for GHC 8.6 and older.
