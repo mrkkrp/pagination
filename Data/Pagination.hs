@@ -98,7 +98,7 @@ instance Foldable Paginated where
 
 instance Traversable Paginated where
   traverse f p =
-    let g p' xs = p' {pgItems = xs}
+    let g p' xs = p'{pgItems = xs}
      in g p <$> traverse f (pgItems p)
 
 -- | Create paginated data.
@@ -147,15 +147,15 @@ paginatedItemsTotal = pgItemsTotal
 
 -- | Test whether there are other pages.
 hasOtherPages :: Paginated a -> Bool
-hasOtherPages Paginated {..} = pgPagesTotal > 1
+hasOtherPages Paginated{..} = pgPagesTotal > 1
 
 -- | Is there a previous page?
 hasPrevPage :: Paginated a -> Bool
-hasPrevPage Paginated {..} = pageIndex pgPagination > 1
+hasPrevPage Paginated{..} = pageIndex pgPagination > 1
 
 -- | Is there a next page?
 hasNextPage :: Paginated a -> Bool
-hasNextPage Paginated {..} = pageIndex pgPagination < pgPagesTotal
+hasNextPage Paginated{..} = pageIndex pgPagination < pgPagesTotal
 
 -- | Get the range of pages to show before and after the current page. This
 -- does not necessarily include the first and the last pages (they are
@@ -168,8 +168,8 @@ pageRange ::
   Natural ->
   -- | Page range
   NonEmpty Natural
-pageRange Paginated {..} 0 = NE.fromList [pageIndex pgPagination]
-pageRange Paginated {..} n =
+pageRange Paginated{..} 0 = NE.fromList [pageIndex pgPagination]
+pageRange Paginated{..} n =
   let len = min pgPagesTotal (n * 2 + 1)
       index = pageIndex pgPagination
       shift
@@ -197,7 +197,7 @@ forwardEllip ::
   Natural ->
   -- | Do we have forward ellipsis?
   Bool
-forwardEllip p@Paginated {..} n = NE.last (pageRange p n) < pred pgPagesTotal
+forwardEllip p@Paginated{..} n = NE.last (pageRange p n) < pred pgPagesTotal
 
 ----------------------------------------------------------------------------
 -- Exceptions
